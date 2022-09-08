@@ -1,0 +1,7 @@
+bot:
+  token: token
+  guildId: 0
+  icon_url: https://localhost/icon.png
+
+edt:
+  url: https://localhost?edt=edt
