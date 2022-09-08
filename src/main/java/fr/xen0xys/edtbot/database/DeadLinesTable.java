@@ -17,12 +17,12 @@ public class DeadLinesTable extends Table {
     }
 
     public boolean isIdExist(String uid){
-        String query = String.format("SELECT * FROM %s WHERE uid = %s", this.getTableName(), uid);
+        String query = String.format("SELECT * FROM %s WHERE uid = '%s'", this.getTableName(), uid);
         return this.getDatabase().isDataExist(this.getDatabase().executeQuery(query)) == Status.Exist;
     }
 
     public Status deleteDeadLine(String uid){
-        String query = String.format("DELETE FROM %s WHERE uid = %s", this.getTableName(), uid);
+        String query = String.format("DELETE FROM %s WHERE uid = '%s'", this.getTableName(), uid);
         return this.getDatabase().executeUpdateQuery(query);
     }
 
