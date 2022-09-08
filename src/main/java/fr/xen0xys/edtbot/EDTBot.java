@@ -1,11 +1,11 @@
 package fr.xen0xys.edtbot;
 
 
+import fr.xen0xys.edtbot.events.ModalInteractionListener;
 import fr.xen0xys.edtbot.models.Config;
 import fr.xen0xys.edtbot.database.DeadLinesTable;
 import fr.xen0xys.edtbot.events.SlashCommandListener;
-import fr.xen0xys.edtbot.models.EDTParser;
-import fr.xen0xys.edtbot.models.Utils;
+import fr.xen0xys.edtbot.slashcommands.DeadLineSlashCommand;
 import fr.xen0xys.edtbot.slashcommands.EDTSlashCommand;
 import fr.xen0xys.xen0lib.database.Database;
 import fr.xen0xys.xen0lib.utils.Status;
@@ -65,7 +65,8 @@ public class EDTBot {
         database.openTableAndCreateINE(deadLinesTable, "id VARCHAR(6) NOT NULL PRIMARY KEY," +
                 "name VARCHAR(50)," +
                 "content TEXT," +
-                "endTimestamp BIGINT");
+                "endTimestamp BIGINT," +
+                "channelId BIGINT");
 
         // Bot init
         try {
@@ -77,9 +78,11 @@ public class EDTBot {
             }
             // Slash commands
             guild.upsertCommand(new EDTSlashCommand().getCommandData()).queue();
+            guild.upsertCommand(new DeadLineSlashCommand().getCommandData()).queue();
 
             // Events
             bot.addEventListener(new SlashCommandListener());
+            bot.addEventListener(new ModalInteractionListener());
         } catch (InterruptedException | LoginException e) {
             throw new RuntimeException(e);
         }
@@ -102,5 +105,13 @@ public class EDTBot {
 
     public static File getDataFolder() {
         return DATAFOLDER;
+    }
+
+    public static Logger getLogger() {
+        return logger;
+    }
+
+    public static DeadLinesTable getDeadLinesTable() {
+        return deadLinesTable;
     }
 }
