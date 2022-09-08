@@ -20,4 +20,18 @@ public abstract class Utils {
             e.printStackTrace();
         }
     }
+
+    // A method that return a random unique id with one "#" and 5 capitals letters or numbers for a new deadline
+    public static String generateId(){
+        StringBuilder id = new StringBuilder("#");
+        for(int i = 0; i < 5; i++){
+            int random = (int) (Math.random() * 36);
+            if(random < 10){
+                id.append(random);
+            }else{
+                id.append((char) (random + 55));
+            }
+        }
+        return id.toString();
+    }
 }
