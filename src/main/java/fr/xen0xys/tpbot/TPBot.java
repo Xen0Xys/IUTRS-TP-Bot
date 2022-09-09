@@ -1,12 +1,14 @@
-package fr.xen0xys.edtbot;
+package fr.xen0xys.tpbot;
 
 
-import fr.xen0xys.edtbot.events.ModalInteractionListener;
-import fr.xen0xys.edtbot.models.Config;
-import fr.xen0xys.edtbot.database.DeadLinesTable;
-import fr.xen0xys.edtbot.events.SlashCommandListener;
-import fr.xen0xys.edtbot.slashcommands.DeadLineSlashCommand;
-import fr.xen0xys.edtbot.slashcommands.EDTSlashCommand;
+import fr.xen0xys.tpbot.events.ModalInteractionListener;
+import fr.xen0xys.tpbot.models.Config;
+import fr.xen0xys.tpbot.database.DeadLinesTable;
+import fr.xen0xys.tpbot.events.SlashCommandListener;
+import fr.xen0xys.tpbot.models.deadline.AsyncDeadlineStatusUpdater;
+import fr.xen0xys.tpbot.models.deadline.DeadLine;
+import fr.xen0xys.tpbot.slashcommands.DeadLineSlashCommand;
+import fr.xen0xys.tpbot.slashcommands.EDTSlashCommand;
 import fr.xen0xys.xen0lib.database.Database;
 import fr.xen0xys.xen0lib.utils.Status;
 import net.dv8tion.jda.api.JDA;
@@ -22,21 +24,21 @@ import java.util.Scanner;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
-public class EDTBot {
+public class TPBot {
     public static JDA bot;
     private static Logger logger;
     private static Config config;
     private static final File DATAFOLDER = new File("TPBot");
+    private static final HashMap<String, DeadLine> deadLines = new HashMap<>();
 
-    private static Database database;
     private static DeadLinesTable deadLinesTable;
 
     public static void main(String[] args){
         //Init
-        InputStream stream = EDTBot.class.getClassLoader().getResourceAsStream("logging.properties");
+        InputStream stream = TPBot.class.getClassLoader().getResourceAsStream("logging.properties");
         try {
             LogManager.getLogManager().readConfiguration(stream);
-            logger = Logger.getLogger(EDTBot.class.getName());
+            logger = Logger.getLogger(TPBot.class.getName());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -47,6 +49,7 @@ public class EDTBot {
         // logger.info(Long.toString(new EDTParser().parseEdt().get(0).getStartTimestamp()));
 
         // Database init
+        Database database;
         if(getConfiguration().isMySQLEnabled()){
             HashMap<String, Object> databaseInfos = getConfiguration().getDatabaseInfos();
             database = new Database(String.valueOf(databaseInfos.get("host")),
@@ -68,6 +71,11 @@ public class EDTBot {
                 "endTimestamp BIGINT," +
                 "channelId BIGINT," +
                 "status VARCHAR(11)");
+
+        // Deadline loading
+        loadDeadLines();
+        AsyncDeadlineStatusUpdater asyncDeadlineStatusUpdater = new AsyncDeadlineStatusUpdater();
+        asyncDeadlineStatusUpdater.start();
 
         // Bot init
         try {
@@ -94,10 +102,19 @@ public class EDTBot {
         boolean running = true;
         do{
             message = scanner.nextLine();
-            if(message.equals("exit")){
+            if(message.equals("exit") || message.equals("stop")){
                 running = false;
+                asyncDeadlineStatusUpdater.shutdown();
+                database.disconnect();
+                bot.shutdownNow();
             }
         } while (running);
+    }
+
+    private static void loadDeadLines(){
+        for(DeadLine deadLine : getDeadLinesTable().getDeadLines()){
+            TPBot.deadLines.put(deadLine.getId(), deadLine);
+        }
     }
 
     public static Config getConfiguration(){
@@ -114,5 +131,13 @@ public class EDTBot {
 
     public static DeadLinesTable getDeadLinesTable() {
         return deadLinesTable;
+    }
+
+    public static HashMap<String, DeadLine> getDeadLines() {
+        return deadLines;
+    }
+
+    public static JDA getBot() {
+        return bot;
     }
 }
