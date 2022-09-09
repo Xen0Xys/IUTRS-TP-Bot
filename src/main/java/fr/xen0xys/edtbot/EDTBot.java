@@ -66,7 +66,8 @@ public class EDTBot {
                 "name VARCHAR(50)," +
                 "content TEXT," +
                 "endTimestamp BIGINT," +
-                "channelId BIGINT");
+                "channelId BIGINT," +
+                "status VARCHAR(11)");
 
         // Bot init
         try {
