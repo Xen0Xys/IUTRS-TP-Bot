@@ -11,7 +11,7 @@ public abstract class Utils {
     public static void updateEdtFile(){
         try (BufferedInputStream in = new BufferedInputStream(new URL(EDTBot.getConfiguration().getEdtUrl()).openStream());
                 FileOutputStream fileOutputStream = new FileOutputStream(EDTBot.getDataFolder().getPath() + "/edt.ics")) {
-            byte dataBuffer[] = new byte[1024];
+            byte[] dataBuffer = new byte[1024];
             int bytesRead;
             while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
                 fileOutputStream.write(dataBuffer, 0, bytesRead);
@@ -33,5 +33,14 @@ public abstract class Utils {
             }
         }
         return id.toString();
+    }
+
+    public static DeadlineStatus getDeadlineStatusFromTimestamp(long deadlineTimestamp){
+        for(DeadlineStatus deadlineStatus : DeadlineStatus.values()){
+            if(deadlineTimestamp - (System.currentTimeMillis() / 1000) > deadlineStatus.getDuration()){
+                return deadlineStatus;
+            }
+        }
+        return DeadlineStatus.ENDED;
     }
 }

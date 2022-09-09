@@ -1,5 +1,6 @@
 package fr.xen0xys.edtbot.database;
 
+import fr.xen0xys.edtbot.models.DeadlineStatus;
 import fr.xen0xys.edtbot.models.Utils;
 import fr.xen0xys.xen0lib.database.Database;
 import fr.xen0xys.xen0lib.database.Table;
@@ -11,8 +12,8 @@ public class DeadLinesTable extends Table {
         super(tableName, database);
     }
 
-    public Status addDeadLine(String name, String content, long endTimestamp, long channelId){
-        String query = String.format("INSERT INTO %s VALUES ('%s', '%s', '%s', %d, %d)", this.getTableName(), Utils.generateId(), name, content, endTimestamp, channelId);
+    public Status addDeadLine(String name, String content, long endTimestamp, long channelId, DeadlineStatus deadlineStatus){
+        String query = String.format("INSERT INTO %s VALUES ('%s', '%s', '%s', %d, %d, '%s')", this.getTableName(), Utils.generateId(), name, content, endTimestamp, channelId, deadlineStatus);
         return this.getDatabase().executeUpdateQuery(query);
     }
 
