@@ -13,4 +13,16 @@ public class UtilsTests {
         System.out.println("------------------------");
     }
 
+    @Test
+    void DLStatusTest(){
+        System.out.println("------------------------");
+        System.out.println("Deadline TEST:");
+        System.out.println("Target:              1662898672");
+        System.out.println("Current time:        " + System.currentTimeMillis());
+        System.out.println("Current time / 1000: " + System.currentTimeMillis() / 1000);
+        System.out.println(1662898672 - System.currentTimeMillis() / 1000);
+        System.out.println(Utils.getDeadlineStatusFromTimestamp(1662898672));
+        System.out.println("------------------------");
+    }
+
 }
