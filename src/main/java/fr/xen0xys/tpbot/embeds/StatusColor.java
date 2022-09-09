@@ -1,7 +1,8 @@
-package fr.xen0xys.edtbot.models;
+package fr.xen0xys.tpbot.embeds;
 
 import java.awt.*;
 
+@SuppressWarnings("unused")
 public enum StatusColor {
     Ok(Color.GREEN),
     Warning(Color.YELLOW),

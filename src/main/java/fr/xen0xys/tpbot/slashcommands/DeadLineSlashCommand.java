@@ -1,4 +1,4 @@
-package fr.xen0xys.edtbot.slashcommands;
+package fr.xen0xys.tpbot.slashcommands;
 
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
@@ -19,8 +19,10 @@ public class DeadLineSlashCommand {
         SubcommandData displayDeadlineCommandData = new SubcommandData("display", "get EDT for the current week");
         displayDeadlineCommandData.addOption(OptionType.STRING, "id", "Deadline ID", true);
 
+        SubcommandData listDeadlineCommandData = new SubcommandData("list", "List all created deadlines");
+
         this.commandData = Commands.slash("deadline", "Get EDT for defined duration").addSubcommands(
-                addDeadlineCommandData, removeDeadlineCommandData, displayDeadlineCommandData);
+                addDeadlineCommandData, removeDeadlineCommandData, displayDeadlineCommandData, listDeadlineCommandData);
     }
 
     public CommandData getCommandData() {

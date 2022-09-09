@@ -1,6 +1,7 @@
-package fr.xen0xys.edtbot.models;
+package fr.xen0xys.tpbot.models;
 
-import fr.xen0xys.edtbot.EDTBot;
+import fr.xen0xys.tpbot.TPBot;
+import fr.xen0xys.tpbot.models.deadline.DeadlineStatus;
 
 import java.io.BufferedInputStream;
 import java.io.FileOutputStream;
@@ -8,9 +9,10 @@ import java.io.IOException;
 import java.net.URL;
 
 public abstract class Utils {
+    @SuppressWarnings("unused")
     public static void updateEdtFile(){
-        try (BufferedInputStream in = new BufferedInputStream(new URL(EDTBot.getConfiguration().getEdtUrl()).openStream());
-                FileOutputStream fileOutputStream = new FileOutputStream(EDTBot.getDataFolder().getPath() + "/edt.ics")) {
+        try (BufferedInputStream in = new BufferedInputStream(new URL(TPBot.getConfiguration().getEdtUrl()).openStream());
+             FileOutputStream fileOutputStream = new FileOutputStream(TPBot.getDataFolder().getPath() + "/edt.ics")) {
             byte[] dataBuffer = new byte[1024];
             int bytesRead;
             while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
@@ -42,5 +44,9 @@ public abstract class Utils {
             }
         }
         return DeadlineStatus.ENDED;
+    }
+
+    public static String getDueDateFromTimestamp(long timestamp){
+        return String.format("<t:%d:f>", timestamp);
     }
 }

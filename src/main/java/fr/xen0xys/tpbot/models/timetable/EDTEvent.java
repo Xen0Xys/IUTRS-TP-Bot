@@ -1,10 +1,11 @@
-package fr.xen0xys.edtbot.models;
+package fr.xen0xys.tpbot.models.timetable;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 
+@SuppressWarnings("ALL")
 public class EDTEvent {
 
     private final String description;

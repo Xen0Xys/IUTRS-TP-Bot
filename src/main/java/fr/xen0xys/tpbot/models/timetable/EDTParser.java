@@ -1,6 +1,6 @@
-package fr.xen0xys.edtbot.models;
+package fr.xen0xys.tpbot.models.timetable;
 
-import fr.xen0xys.edtbot.EDTBot;
+import fr.xen0xys.tpbot.TPBot;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -8,13 +8,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class EDTParser {
 
     private final BufferedReader bufferedInputStream;
 
     public EDTParser(){
         try {
-            InputStream inputStream = new FileInputStream(EDTBot.getDataFolder() + "/edt.ics");
+            InputStream inputStream = new FileInputStream(TPBot.getDataFolder() + "/edt.ics");
             this.bufferedInputStream = new BufferedReader(new InputStreamReader(inputStream));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);

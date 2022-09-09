@@ -1,4 +1,4 @@
-package fr.xen0xys.edtbot.models;
+package fr.xen0xys.tpbot.models;
 
 import fr.xen0xys.xen0lib.utils.ConfigurationReader;
 import org.bspfsystems.yamlconfiguration.file.YamlConfiguration;

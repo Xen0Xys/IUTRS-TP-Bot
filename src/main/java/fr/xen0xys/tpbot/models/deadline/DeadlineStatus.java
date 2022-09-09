@@ -1,4 +1,4 @@
-package fr.xen0xys.edtbot.models;
+package fr.xen0xys.tpbot.models.deadline;
 
 public enum DeadlineStatus {
 

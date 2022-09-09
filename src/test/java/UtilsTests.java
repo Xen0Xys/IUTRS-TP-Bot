@@ -1,4 +1,4 @@
-import fr.xen0xys.edtbot.models.Utils;
+import fr.xen0xys.tpbot.models.Utils;
 import org.junit.jupiter.api.Test;
 
 public class UtilsTests {
