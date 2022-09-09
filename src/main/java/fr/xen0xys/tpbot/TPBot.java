@@ -1,10 +1,10 @@
 package fr.xen0xys.tpbot;
 
 
-import fr.xen0xys.tpbot.events.ModalInteractionListener;
-import fr.xen0xys.tpbot.models.Config;
 import fr.xen0xys.tpbot.database.DeadLinesTable;
+import fr.xen0xys.tpbot.events.ModalInteractionListener;
 import fr.xen0xys.tpbot.events.SlashCommandListener;
+import fr.xen0xys.tpbot.models.Config;
 import fr.xen0xys.tpbot.models.deadline.AsyncDeadlineStatusUpdater;
 import fr.xen0xys.tpbot.models.deadline.DeadLine;
 import fr.xen0xys.tpbot.slashcommands.DeadLineSlashCommand;
