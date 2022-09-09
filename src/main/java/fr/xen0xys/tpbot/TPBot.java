@@ -72,11 +72,6 @@ public class TPBot {
                 "channelId BIGINT," +
                 "status VARCHAR(11)");
 
-        // Deadline loading
-        loadDeadLines();
-        AsyncDeadlineStatusUpdater asyncDeadlineStatusUpdater = new AsyncDeadlineStatusUpdater();
-        asyncDeadlineStatusUpdater.start();
-
         // Bot init
         try {
             bot = JDABuilder.createDefault(getConfiguration().getBotToken()).build().awaitReady();
@@ -95,6 +90,11 @@ public class TPBot {
         } catch (InterruptedException | LoginException e) {
             throw new RuntimeException(e);
         }
+
+        // Deadline loading
+        loadDeadLines();
+        AsyncDeadlineStatusUpdater asyncDeadlineStatusUpdater = new AsyncDeadlineStatusUpdater();
+        asyncDeadlineStatusUpdater.start();
 
         // Program loop
         Scanner scanner = new Scanner(System.in);
