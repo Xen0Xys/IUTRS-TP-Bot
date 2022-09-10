@@ -6,8 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="EDTBot" />
+        <module name="TPBot" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="EDTBot" target="17" />
+    </bytecodeTargetLevel>
   </component>
 </project>
