@@ -8,7 +8,8 @@ public enum DeadlineStatus {
     DAY(24*60*60L, "1 Jour"),
     HOUR(60*60L, "1 Heure"),
     TEN_MINUTES(10*60L, "10 Minutes"),
-    ENDED(0L, "Terminé");
+    END(0L, "Fin"),
+    PASSED(Long.MIN_VALUE, "Passé");
 
     private final long msDuration;
     private final String display;

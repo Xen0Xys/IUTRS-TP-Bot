@@ -7,6 +7,8 @@ import java.io.BufferedInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 public abstract class Utils {
     @SuppressWarnings("unused")
@@ -43,10 +45,16 @@ public abstract class Utils {
                 return deadlineStatus;
             }
         }
-        return DeadlineStatus.ENDED;
+        return DeadlineStatus.END;
     }
 
     public static String getDueDateFromTimestamp(long timestamp){
         return String.format("<t:%d:f>", timestamp);
+    }
+
+    public static String getCurrentTimezone(){
+        Calendar now = Calendar.getInstance();
+        TimeZone timeZone = now.getTimeZone();
+        return timeZone.getID();
     }
 }

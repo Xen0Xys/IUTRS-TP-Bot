@@ -1,7 +1,7 @@
 package fr.xen0xys.tpbot.models.deadline;
 
 import fr.xen0xys.tpbot.TPBot;
-import fr.xen0xys.tpbot.embeds.DeadLineDisplayEmbed;
+import fr.xen0xys.tpbot.embeds.deadlines.DeadLineDisplayEmbed;
 import fr.xen0xys.tpbot.models.Utils;
 import fr.xen0xys.xen0lib.utils.Status;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -23,7 +23,7 @@ public class AsyncDeadlineStatusUpdater extends Thread {
                 Thread.sleep(1000);
                 // Async
                 for(DeadLine deadLine: TPBot.getDeadLines().values()){
-                    if(deadLine.getDeadlineStatus() != DeadlineStatus.ENDED){
+                    if(deadLine.getDeadlineStatus() != DeadlineStatus.PASSED){
                         DeadlineStatus deadlineStatus;
                         if((deadlineStatus = Utils.getDeadlineStatusFromTimestamp(deadLine.getEndTimestamp())) != deadLine.getDeadlineStatus()){
                             // Send notification in targeted channel
@@ -39,7 +39,7 @@ public class AsyncDeadlineStatusUpdater extends Thread {
                                     TPBot.getLogger().severe("An error occurred while updating deadline status in the DB");
                                 }
                             }else{
-                                TPBot.getLogger().severe("Channel not found for deadline " + deadLine.getId());
+                                TPBot.getLogger().severe("Channel not found for deadline %s" + deadLine.getId());
                             }
                         }
                     }

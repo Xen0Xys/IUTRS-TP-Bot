@@ -6,6 +6,7 @@ import fr.xen0xys.tpbot.events.ModalInteractionListener;
 import fr.xen0xys.tpbot.events.SlashCommandListener;
 import fr.xen0xys.tpbot.models.Config;
 import fr.xen0xys.tpbot.models.ModuleManager;
+import fr.xen0xys.tpbot.models.Utils;
 import fr.xen0xys.tpbot.models.deadline.DeadLine;
 import fr.xen0xys.tpbot.slashcommands.DeadLineSlashCommand;
 import fr.xen0xys.tpbot.slashcommands.EDTSlashCommand;
@@ -98,23 +99,28 @@ public class TPBot {
         moduleManager.loadModules();
         logger.info("Modules started!");
 
+        // Timezone tests
+        logger.info(String.format("Current timezone: %s", Utils.getCurrentTimezone()));
+
         // Program loop
         Scanner scanner = new Scanner(System.in);
         String message;
         boolean running = true;
+        logger.info("TPBot started!");
         do{
             message = scanner.nextLine();
-            switch (message){
-                case "exit":
+            switch (message) {
+                case "stop", "exit" -> {
                     running = false;
                     moduleManager.unloadModules();
                     database.disconnect();
                     bot.shutdownNow();
-                    getConfiguration().save();
-                case "reload":
+                }
+                case "reload" -> {
                     config = new Config(DATAFOLDER, "config.yml");
                     moduleManager.unloadModules();
                     moduleManager.loadModules();
+                }
             }
         } while (running);
     }

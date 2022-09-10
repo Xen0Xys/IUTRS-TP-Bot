@@ -1,4 +1,4 @@
-package fr.xen0xys.tpbot.embeds;
+package fr.xen0xys.tpbot.embeds.deadlines;
 
 import fr.xen0xys.tpbot.TPBot;
 import fr.xen0xys.tpbot.models.Utils;
@@ -13,8 +13,8 @@ public class DeadLineListEmbed extends EmbedBuilder {
 
     public DeadLineListEmbed(List<DeadLine> deadLineList){
         this.setColor(Color.GREEN);
-        this.setTitle("Deadlines list");
-        String content = "";
+        this.setTitle("Deadlines:");
+        String content;
         for(DeadLine deadLine: deadLineList){
             TextChannel channel = TPBot.getBot().getTextChannelById(deadLine.getChannelId());
             String channelMention;
@@ -24,13 +24,13 @@ public class DeadLineListEmbed extends EmbedBuilder {
                 channelMention = "UNKNOWN";
             }
             content = String.format("""
-                    **Name:** %s
                     **Channel:** %s
-                    **Due date:** %s
+                    **Dû le:** %s
                     **Id:** %s
-                    """, deadLine.getName(), channelMention, Utils.getDueDateFromTimestamp(deadLine.getEndTimestamp()), deadLine.getId());
+                    """, channelMention, Utils.getDueDateFromTimestamp(deadLine.getEndTimestamp()), deadLine.getId());
+            this.addField(String.format("Nom: %s", deadLine.getName()), content, false);
         }
-        this.setDescription(content);
+        this.setFooter(TPBot.getConfiguration().getEmbedFooter());
     }
 
 }

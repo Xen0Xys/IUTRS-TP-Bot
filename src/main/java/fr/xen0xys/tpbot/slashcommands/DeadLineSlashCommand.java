@@ -21,8 +21,10 @@ public class DeadLineSlashCommand {
 
         SubcommandData listDeadlineCommandData = new SubcommandData("list", "List all created deadlines");
 
+        SubcommandData helpDeadlineCommandData = new SubcommandData("help", "List all created deadlines");
+
         this.commandData = Commands.slash("deadline", "Get EDT for defined duration").addSubcommands(
-                addDeadlineCommandData, removeDeadlineCommandData, displayDeadlineCommandData, listDeadlineCommandData);
+                addDeadlineCommandData, removeDeadlineCommandData, displayDeadlineCommandData, listDeadlineCommandData, helpDeadlineCommandData);
     }
 
     public CommandData getCommandData() {

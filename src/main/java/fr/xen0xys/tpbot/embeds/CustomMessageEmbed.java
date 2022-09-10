@@ -8,5 +8,6 @@ public class CustomMessageEmbed extends EmbedBuilder {
     public CustomMessageEmbed(StatusColor statusColor, String content) {
         this.setColor(statusColor.getColor());
         this.setAuthor(content, null, TPBot.getConfiguration().getIconUrl());
+        this.setFooter(TPBot.getConfiguration().getEmbedFooter());
     }
 }

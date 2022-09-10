@@ -1,8 +1,9 @@
 package fr.xen0xys.tpbot.commands;
 
 import fr.xen0xys.tpbot.TPBot;
-import fr.xen0xys.tpbot.embeds.DeadLineDisplayEmbed;
-import fr.xen0xys.tpbot.embeds.DeadLineListEmbed;
+import fr.xen0xys.tpbot.embeds.deadlines.DeadLineDisplayEmbed;
+import fr.xen0xys.tpbot.embeds.deadlines.DeadLineListEmbed;
+import fr.xen0xys.tpbot.embeds.deadlines.DeadlinesHelpEmbed;
 import fr.xen0xys.tpbot.models.deadline.DeadLine;
 import fr.xen0xys.xen0lib.utils.Status;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -67,4 +68,7 @@ public abstract class DeadlineCommands {
         e.deferReply(true).addEmbeds(new DeadLineListEmbed(new ArrayList<>(TPBot.getDeadLines().values())).build()).complete();
     }
 
+    public static void helpDeadlinesCommand(SlashCommandInteractionEvent e) {
+        e.deferReply(true).addEmbeds(new DeadlinesHelpEmbed().build()).queue();
+    }
 }
