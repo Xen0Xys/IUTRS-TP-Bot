@@ -2,6 +2,7 @@ bot:
   token: token
   guildId: 0
   icon_url: https://localhost/icon.png
+  embedFooter: Developed by Xen0Xys
 
 modules:
   deadlines:

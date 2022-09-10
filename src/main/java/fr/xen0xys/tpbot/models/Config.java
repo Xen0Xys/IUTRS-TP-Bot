@@ -49,4 +49,8 @@ public class Config extends ConfigurationReader {
     public Object getModuleValue(String moduleName, String value){
         return this.getConfiguration().get(String.format("modules.%s.%s", moduleName, value));
     }
+
+    public String getEmbedFooter() {
+        return this.getConfiguration().getString("bot.embedFooter");
+    }
 }
