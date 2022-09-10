@@ -5,7 +5,7 @@ import fr.xen0xys.tpbot.database.DeadLinesTable;
 import fr.xen0xys.tpbot.events.ModalInteractionListener;
 import fr.xen0xys.tpbot.events.SlashCommandListener;
 import fr.xen0xys.tpbot.models.Config;
-import fr.xen0xys.tpbot.models.deadline.AsyncDeadlineStatusUpdater;
+import fr.xen0xys.tpbot.models.ModuleManager;
 import fr.xen0xys.tpbot.models.deadline.DeadLine;
 import fr.xen0xys.tpbot.slashcommands.DeadLineSlashCommand;
 import fr.xen0xys.tpbot.slashcommands.EDTSlashCommand;
@@ -91,10 +91,12 @@ public class TPBot {
             throw new RuntimeException(e);
         }
 
-        // Deadline loading
-        loadDeadLines();
-        AsyncDeadlineStatusUpdater asyncDeadlineStatusUpdater = new AsyncDeadlineStatusUpdater();
-        asyncDeadlineStatusUpdater.start();
+        // Module loading
+        logger.info("Creating module manager...");
+        ModuleManager moduleManager = new ModuleManager(getConfiguration());
+        logger.info("Loading modules...");
+        moduleManager.loadModules();
+        logger.info("Modules started!");
 
         // Program loop
         Scanner scanner = new Scanner(System.in);
@@ -102,19 +104,19 @@ public class TPBot {
         boolean running = true;
         do{
             message = scanner.nextLine();
-            if(message.equals("exit") || message.equals("stop")){
-                running = false;
-                asyncDeadlineStatusUpdater.shutdown();
-                database.disconnect();
-                bot.shutdownNow();
+            switch (message){
+                case "exit":
+                    running = false;
+                    moduleManager.unloadModules();
+                    database.disconnect();
+                    bot.shutdownNow();
+                    getConfiguration().save();
+                case "reload":
+                    config = new Config(DATAFOLDER, "config.yml");
+                    moduleManager.unloadModules();
+                    moduleManager.loadModules();
             }
         } while (running);
-    }
-
-    private static void loadDeadLines(){
-        for(DeadLine deadLine : getDeadLinesTable().getDeadLines()){
-            TPBot.deadLines.put(deadLine.getId(), deadLine);
-        }
     }
 
     public static Config getConfiguration(){

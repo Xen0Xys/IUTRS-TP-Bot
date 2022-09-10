@@ -34,10 +34,19 @@ public class Config extends ConfigurationReader {
     }
 
     public String getEdtUrl(){
-        return this.getConfiguration().getString("edt.url");
+        return this.getConfiguration().getString("modules.timetable.url");
     }
 
     public String getIconUrl(){
         return this.getConfiguration().getString("bot.iconUrl");
+    }
+
+    // Modules
+    public boolean isModuleEnabled(String moduleName){
+        return this.getConfiguration().getBoolean(String.format("modules.%s.enable", moduleName));
+    }
+    @SuppressWarnings("unused")
+    public Object getModuleValue(String moduleName, String value){
+        return this.getConfiguration().get(String.format("modules.%s.%s", moduleName, value));
     }
 }

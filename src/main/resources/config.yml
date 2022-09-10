@@ -3,8 +3,12 @@ bot:
   guildId: 0
   icon_url: https://localhost/icon.png
 
-edt:
-  url: https://localhost?edt=edt
+modules:
+  deadlines:
+    enable: true
+  timetable:
+    enable: true
+    url: https://localhost?edt=edt
 
 mysql:
   enable: false
@@ -13,3 +17,4 @@ mysql:
   user: username
   password: password
   database: database_name
+
