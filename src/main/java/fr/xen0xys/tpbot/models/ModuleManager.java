@@ -32,9 +32,9 @@ public class ModuleManager {
     }
 
     private void loadDeadlines(){
+        TPBot.getDeadLines().clear();
         for(DeadLine deadLine : TPBot.getDeadLinesTable().getDeadLines()){
             if(deadLine.getDeadlineStatus() != DeadlineStatus.PASSED){
-                TPBot.getDeadLines().clear();
                 TPBot.getDeadLines().put(deadLine.getId(), deadLine);
             }
         }
