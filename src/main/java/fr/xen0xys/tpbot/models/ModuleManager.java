@@ -36,12 +36,14 @@ public class ModuleManager {
         for(DeadLine deadLine : TPBot.getDeadLinesTable().getDeadLines()){
             if(deadLine.getDeadlineStatus() != DeadlineStatus.PASSED){
                 TPBot.getDeadLines().put(deadLine.getId(), deadLine);
+                TPBot.getLogger().info(String.format("[DEADLINES] Loaded deadline: %s with ID: %s", deadLine.getName(), deadLine.getId()));
             }
         }
         this.asyncDeadlineStatusUpdater = new AsyncDeadlineStatusUpdater();
         this.asyncDeadlineStatusUpdater.start();
     }
     private void unloadDeadlines(){
+        TPBot.getDeadLines().clear();
         asyncDeadlineStatusUpdater.shutdown();
     }
 

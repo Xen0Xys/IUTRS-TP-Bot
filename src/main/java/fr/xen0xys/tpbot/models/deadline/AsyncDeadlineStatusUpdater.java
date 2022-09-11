@@ -24,30 +24,34 @@ public class AsyncDeadlineStatusUpdater extends Thread {
                 // Async
                 for(DeadLine deadLine: TPBot.getDeadLines().values()){
                     if(deadLine.getDeadlineStatus() != DeadlineStatus.PASSED){
-                        DeadlineStatus deadlineStatus;
-                        if((deadlineStatus = Utils.getDeadlineStatusFromTimestamp(deadLine.getEndTimestamp())) != deadLine.getDeadlineStatus()){
+                        DeadlineStatus newDeadlineStatus;
+                        if((newDeadlineStatus = Utils.getDeadlineStatusFromTimestamp(deadLine.getEndTimestamp())) != deadLine.getDeadlineStatus()){
+                            TPBot.getLogger().info(String.format("Updating deadline status for deadline: %s with ID: %s...", deadLine.getName(), deadLine.getId()));
+                            TPBot.getLogger().info(String.format("Deadline change from %s to %s", deadLine.getDeadlineStatus(), newDeadlineStatus));
                             // Send notification in targeted channel
                             TextChannel channel = TPBot.getBot().getTextChannelById(deadLine.getChannelId());
                             if(channel != null){
-                                // Create a copy of deadline in case of crash during the update
+                                // Create a copy of the local deadline in case of crash during the update
                                 DeadLine temporaryDeadline = new DeadLine(deadLine);
-                                temporaryDeadline.setDeadlineStatus(deadlineStatus);
+                                temporaryDeadline.setDeadlineStatus(newDeadlineStatus);
                                 channel.sendMessageEmbeds(new DeadLineDisplayEmbed(temporaryDeadline).build()).complete();
                                 // Update status
-                                if(deadlineStatus != DeadlineStatus.PASSED) {
+                                if(newDeadlineStatus != DeadlineStatus.PASSED) {
                                     // If deadline is not passed, update status locally
-                                    deadLine.setDeadlineStatus(deadlineStatus);
+                                    deadLine.setDeadlineStatus(newDeadlineStatus);
                                 }else{
                                     // If deadline is passed, remove them locally
                                     TPBot.getDeadLines().remove(deadLine.getId());
                                 }
                                 // In two cases, try updating status to database (not removing passed deadlines ATM)
-                                if(TPBot.getDeadLinesTable().updateDeadlineStatus(deadLine.getId(), deadlineStatus) != Status.Success){
+                                if(TPBot.getDeadLinesTable().updateDeadlineStatus(deadLine.getId(), newDeadlineStatus) != Status.Success){
                                     // If error when pushing status change to database
                                     TPBot.getLogger().severe("An error occurred while updating deadline status in the DB");
+                                }else{
+                                    TPBot.getLogger().info("Deadline has been updated!");
                                 }
                             }else{
-                                TPBot.getLogger().severe("Channel not found for deadline %s" + deadLine.getId());
+                                TPBot.getLogger().severe("Channel not found for deadline");
                             }
                         }
                     }else{
