@@ -3,6 +3,7 @@ package fr.xen0xys.tpbot.models;
 import fr.xen0xys.tpbot.TPBot;
 import fr.xen0xys.tpbot.models.deadline.AsyncDeadlineStatusUpdater;
 import fr.xen0xys.tpbot.models.deadline.DeadLine;
+import fr.xen0xys.tpbot.models.deadline.DeadlineStatus;
 
 public class ModuleManager {
 
@@ -32,8 +33,10 @@ public class ModuleManager {
 
     private void loadDeadlines(){
         for(DeadLine deadLine : TPBot.getDeadLinesTable().getDeadLines()){
-            TPBot.getDeadLines().clear();
-            TPBot.getDeadLines().put(deadLine.getId(), deadLine);
+            if(deadLine.getDeadlineStatus() != DeadlineStatus.PASSED){
+                TPBot.getDeadLines().clear();
+                TPBot.getDeadLines().put(deadLine.getId(), deadLine);
+            }
         }
         this.asyncDeadlineStatusUpdater = new AsyncDeadlineStatusUpdater();
         this.asyncDeadlineStatusUpdater.start();
