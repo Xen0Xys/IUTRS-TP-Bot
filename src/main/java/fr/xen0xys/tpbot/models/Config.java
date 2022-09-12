@@ -53,4 +53,8 @@ public class Config extends ConfigurationReader {
     public String getEmbedFooter() {
         return this.getConfiguration().getString("bot.embedFooter");
     }
+
+    public int getExpiryDelay(){
+        return this.getConfiguration().getInt("modules.deadlines.expiryDelay");
+    }
 }

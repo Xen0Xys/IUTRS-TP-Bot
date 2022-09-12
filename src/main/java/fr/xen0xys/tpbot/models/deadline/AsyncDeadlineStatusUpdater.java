@@ -6,6 +6,8 @@ import fr.xen0xys.tpbot.models.Utils;
 import fr.xen0xys.xen0lib.utils.Status;
 import net.dv8tion.jda.api.entities.TextChannel;
 
+import java.util.HashMap;
+
 public class AsyncDeadlineStatusUpdater extends Thread {
 
     private boolean isRunning = false;
@@ -22,7 +24,7 @@ public class AsyncDeadlineStatusUpdater extends Thread {
             try {
                 Thread.sleep(1000);
                 // Async
-                for(DeadLine deadLine: TPBot.getDeadLines().values()){
+                for(DeadLine deadLine: new HashMap<>(TPBot.getDeadLines()).values()){
                     if(deadLine.getDeadlineStatus() != DeadlineStatus.PASSED){
                         DeadlineStatus newDeadlineStatus;
                         if((newDeadlineStatus = Utils.getDeadlineStatusFromTimestamp(deadLine.getEndTimestamp())) != deadLine.getDeadlineStatus()){
@@ -34,7 +36,13 @@ public class AsyncDeadlineStatusUpdater extends Thread {
                                 // Create a copy of the local deadline in case of crash during the update
                                 DeadLine temporaryDeadline = new DeadLine(deadLine);
                                 temporaryDeadline.setDeadlineStatus(newDeadlineStatus);
-                                channel.sendMessageEmbeds(new DeadLineDisplayEmbed(temporaryDeadline).build()).complete();
+
+                                if(((System.currentTimeMillis() / 1000) < deadLine.getEndTimestamp() + (TPBot.getConfiguration().getExpiryDelay() * 60L))){
+                                    channel.sendMessageEmbeds(new DeadLineDisplayEmbed(temporaryDeadline).build()).setContent("@everyone").complete();
+                                }else{
+                                    channel.sendMessageEmbeds(new DeadLineDisplayEmbed(temporaryDeadline).build()).complete();
+                                }
+
                                 // Update status
                                 if(newDeadlineStatus != DeadlineStatus.PASSED) {
                                     // If deadline is not passed, update status locally

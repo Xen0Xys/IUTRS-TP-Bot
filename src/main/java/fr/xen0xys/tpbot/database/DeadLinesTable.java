@@ -28,7 +28,7 @@ public class DeadLinesTable extends Table {
 
     public List<DeadLine> getDeadLines(){
         List<DeadLine> deadLines = new ArrayList<>();
-        String query = String.format("SELECT * FROM %s WHERE status!='%s", this.getTableName(), DeadlineStatus.PASSED);
+        String query = String.format("SELECT * FROM %s WHERE status!='%s'", this.getTableName(), DeadlineStatus.PASSED);
         try (ResultSet rs = this.getDatabase().executeQuery(query)) {
             while(rs.next()){
                 String id = rs.getString("id");
