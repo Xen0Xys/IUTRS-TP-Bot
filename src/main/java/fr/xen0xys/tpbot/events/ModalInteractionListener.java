@@ -21,7 +21,6 @@ public class ModalInteractionListener extends ListenerAdapter {
             long channelId = Long.parseLong(e.getModalId().split("-")[1]);
             String name = e.getValue("name").getAsString();
             String content = e.getValue("content").getAsString();
-            content = content.replace("'", "''");
             long endTimestamp = Long.parseLong(e.getValue("endtimestamp").getAsString());
 
             // Check channel id

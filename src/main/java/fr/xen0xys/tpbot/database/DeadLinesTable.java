@@ -17,7 +17,9 @@ public class DeadLinesTable extends Table {
     }
 
     public Status addDeadLine(DeadLine deadLine){
-        String query = String.format("INSERT INTO %s VALUES ('%s', '%s', '%s', %d, %d, '%s')", this.getTableName(), deadLine.getId(), deadLine.getName(), deadLine.getContent(), deadLine.getEndTimestamp(), deadLine.getChannelId(), deadLine.getDeadlineStatus());
+        String injectionProofContent = deadLine.getContent();
+        injectionProofContent = injectionProofContent.replace("'", "%simple_quote%");
+        String query = String.format("INSERT INTO %s VALUES ('%s', '%s', '%s', %d, %d, '%s')", this.getTableName(), deadLine.getId(), deadLine.getName(), injectionProofContent, deadLine.getEndTimestamp(), deadLine.getChannelId(), deadLine.getDeadlineStatus());
         return this.getDatabase().executeUpdateQuery(query);
     }
 
@@ -34,10 +36,11 @@ public class DeadLinesTable extends Table {
                 String id = rs.getString("id");
                 String name = rs.getString("name");
                 String content = rs.getString("content");
+                String injectionProofContent = content.replace("%simple_quote%", "'");
                 long endTimestamp = rs.getLong("endTimestamp");
                 long channelId = rs.getLong("channelId");
                 DeadlineStatus deadlineStatus = DeadlineStatus.valueOf(rs.getString("status"));
-                deadLines.add(new DeadLine(id, name, content, endTimestamp, channelId, deadlineStatus));
+                deadLines.add(new DeadLine(id, name, injectionProofContent, endTimestamp, channelId, deadlineStatus));
             }
         } catch (Exception e) {
             e.printStackTrace();
