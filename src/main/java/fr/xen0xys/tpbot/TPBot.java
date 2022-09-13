@@ -82,7 +82,7 @@ public class TPBot {
                 System.exit(1);
             }
             // Slash commands
-            guild.upsertCommand(new EDTSlashCommand().getCommandData()).queue();
+            // guild.upsertCommand(new EDTSlashCommand().getCommandData()).queue();
             guild.upsertCommand(new DeadLineSlashCommand().getCommandData()).queue();
 
             // Events
