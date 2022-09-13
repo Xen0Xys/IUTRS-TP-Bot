@@ -38,12 +38,16 @@ public class ModalInteractionListener extends ListenerAdapter {
                     case Success -> {
                         channel.sendMessageEmbeds(new DeadLineDisplayEmbed(deadLine).build()).setContent("@everyone").queue();
                         e.deferReply(true).setEmbeds(new CustomMessageEmbed(StatusColor.Ok, String.format("Deadline created with id: %s", deadlineId)).build()).queue();
+                        TPBot.getLogger().info(String.format("Deadline created with id: %s", deadlineId));
                     }
-                    case SQLError ->
-                            e.deferReply(true).setEmbeds(new CustomMessageEmbed(StatusColor.Error, "An error occurred while adding the deadline!").build()).queue();
+                    case SQLError ->{
+                        e.deferReply(true).setEmbeds(new CustomMessageEmbed(StatusColor.Error, "An error occurred while adding the deadline!").build()).queue();
+                        TPBot.getLogger().info("Error with database when creating deadline, aborting!");
+                    }
                 }
             }else{
                 e.deferReply(true).setEmbeds(new CustomMessageEmbed(StatusColor.Error, "Invalid channel!").build()).queue();
+                TPBot.getLogger().info("Given channel not found, aborting deadline creation!");
             }
         }
     }
