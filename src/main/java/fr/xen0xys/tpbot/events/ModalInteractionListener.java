@@ -36,7 +36,7 @@ public class ModalInteractionListener extends ListenerAdapter {
                 // Check if the deadline has been added to the DB
                 switch (status) {
                     case Success -> {
-                        channel.sendMessageEmbeds(new DeadLineDisplayEmbed(deadLine).build()).queue();
+                        channel.sendMessageEmbeds(new DeadLineDisplayEmbed(deadLine).build()).setContent("@everyone").queue();
                         e.deferReply(true).setEmbeds(new CustomMessageEmbed(StatusColor.Ok, String.format("Deadline created with id: %s", deadlineId)).build()).queue();
                     }
                     case SQLError ->
