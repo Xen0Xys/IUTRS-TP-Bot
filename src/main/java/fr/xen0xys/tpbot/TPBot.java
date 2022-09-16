@@ -13,6 +13,7 @@ import fr.xen0xys.xen0lib.database.Database;
 import fr.xen0xys.xen0lib.utils.Status;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
 
 import java.io.File;
@@ -81,6 +82,19 @@ public class TPBot {
         // Bot init
         try {
             bot = JDABuilder.createDefault(getConfiguration().getBotToken()).build().awaitReady();
+
+            // Set bot activity
+            if(getConfiguration().isBotActivityEnabled()){
+                Activity activity;
+                String text = getConfiguration().getBotActivityText();
+                activity = switch (getConfiguration().getBotActivityType()) {
+                    case "STREAMING" -> Activity.streaming(text, getConfiguration().getBotActivityUrl());
+                    case "LISTENING" -> Activity.listening(text);
+                    case "WATCHING" -> Activity.watching(text);
+                    default -> Activity.playing(text);
+                };
+                bot.getPresence().setActivity(activity);
+            }
 
             Guild guild = bot.getGuildById(getConfiguration().getGuildId());
             if(guild == null){

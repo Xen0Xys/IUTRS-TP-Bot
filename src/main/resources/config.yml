@@ -3,6 +3,13 @@ bot:
   guildId: 0
   icon_url: https://localhost/icon.png
   embedFooter: Developed by Xen0Xys
+  activity:
+    enable: true
+    # Can be PLAYING, STREAMING, LISTENING or WATCHING
+    type: PLAYING
+    text: V1.0 DEV
+    # Only for streaming
+    url: null
 
 mysql:
   enable: false

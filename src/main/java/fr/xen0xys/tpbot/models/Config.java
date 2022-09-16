@@ -24,6 +24,18 @@ public class Config extends ConfigurationReader {
     public String getEmbedFooter() {
         return this.getConfiguration().getString("bot.embedFooter");
     }
+    public boolean isBotActivityEnabled(){
+        return this.getConfiguration().getBoolean("bot.activity.enable");
+    }
+    public String getBotActivityType() {
+        return this.getConfiguration().getString("bot.activity.type");
+    }
+    public String getBotActivityText() {
+        return this.getConfiguration().getString("bot.activity.text");
+    }
+    public String getBotActivityUrl() {
+        return this.getConfiguration().getString("bot.activity.url");
+    }
 
     // SQL
     public boolean isMySQLEnabled(){
@@ -53,4 +65,9 @@ public class Config extends ConfigurationReader {
     public String getTimetableURL(){
         return (String) this.getModuleValue("timetable", "url");
     }
+
+
+
+
+
 }
