@@ -4,14 +4,6 @@ bot:
   icon_url: https://localhost/icon.png
   embedFooter: Developed by Xen0Xys
 
-modules:
-  deadlines:
-    enable: true
-    expiryDelay: 5 # The delay in minutes before an unannounced deadline (caused by a bug) will not be announced with mention
-  timetable:
-    enable: true
-    url: https://localhost?edt=edt
-
 mysql:
   enable: false
   host: 0.0.0.0
@@ -20,3 +12,10 @@ mysql:
   password: password
   database: database_name
 
+modules:
+  deadlines:
+    enable: true
+    expiryDelay: 5 # The delay in minutes before an unannounced deadline (caused by a bug) will not be announced with mention
+  timetable:
+    enable: true
+    url: https://localhost?edt=edt

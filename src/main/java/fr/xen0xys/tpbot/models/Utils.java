@@ -11,9 +11,10 @@ import java.util.Calendar;
 import java.util.TimeZone;
 
 public abstract class Utils {
+
     @SuppressWarnings("unused")
     public static void updateEdtFile(){
-        try (BufferedInputStream in = new BufferedInputStream(new URL(TPBot.getConfiguration().getEdtUrl()).openStream());
+        try (BufferedInputStream in = new BufferedInputStream(new URL(TPBot.getConfiguration().getTimetableURL()).openStream());
              FileOutputStream fileOutputStream = new FileOutputStream(TPBot.getDataFolder().getPath() + "/edt.ics")) {
             byte[] dataBuffer = new byte[1024];
             int bytesRead;
@@ -25,7 +26,10 @@ public abstract class Utils {
         }
     }
 
-    // A method that return a random unique id with one "#" and 5 capitals letters or numbers for a new deadline
+    /**
+     * Generate custom id with format "#XXXXX" where X is a random number or capital letter
+     * @return String that is custom id
+     */
     public static String generateId(){
         StringBuilder id = new StringBuilder("#");
         for(int i = 0; i < 5; i++){
@@ -39,6 +43,11 @@ public abstract class Utils {
         return id.toString();
     }
 
+    /**
+     * Get the current deadline status from deadline end timestamp
+     * @param deadlineTimestamp Deadline end timestamp
+     * @return DeadlineStatus object
+     */
     public static DeadlineStatus getDeadlineStatusFromTimestamp(long deadlineTimestamp){
         for(DeadlineStatus deadlineStatus : DeadlineStatus.values()){
             if(deadlineTimestamp - (System.currentTimeMillis() / 1000) > deadlineStatus.getDuration()){
@@ -48,10 +57,19 @@ public abstract class Utils {
         return DeadlineStatus.END;
     }
 
+    /**
+     * Get the discord formatting for timestamp from given timestamp
+     * @param timestamp Long that represent a timestamp
+     * @return String that represent the discord formatting for timestamp
+     */
     public static String getDueDateFromTimestamp(long timestamp){
         return String.format("<t:%d:f>", timestamp);
     }
 
+    /**
+     * Get the current timezone
+     * @return String that represent the current timezone
+     */
     public static String getCurrentTimezone(){
         Calendar now = Calendar.getInstance();
         TimeZone timeZone = now.getTimeZone();

@@ -11,6 +11,21 @@ public class Config extends ConfigurationReader {
         super(dataFolder, fileName);
     }
 
+    // Bot
+    public String getBotToken(){
+        return this.getConfiguration().getString("bot.token");
+    }
+    public long getGuildId(){
+        return this.getConfiguration().getLong("bot.guildId");
+    }
+    public String getIconUrl(){
+        return this.getConfiguration().getString("bot.iconUrl");
+    }
+    public String getEmbedFooter() {
+        return this.getConfiguration().getString("bot.embedFooter");
+    }
+
+    // SQL
     public boolean isMySQLEnabled(){
         return this.getConfiguration().getBoolean("mysql.enable");
     }
@@ -25,36 +40,21 @@ public class Config extends ConfigurationReader {
         return infos;
     }
 
-    public String getBotToken(){
-        return this.getConfiguration().getString("bot.token");
-    }
 
-    public long getGuildId(){
-        return this.getConfiguration().getLong("bot.guildId");
-    }
 
-    public String getEdtUrl(){
-        return this.getConfiguration().getString("modules.timetable.url");
-    }
 
-    public String getIconUrl(){
-        return this.getConfiguration().getString("bot.iconUrl");
-    }
 
     // Modules
     public boolean isModuleEnabled(String moduleName){
         return this.getConfiguration().getBoolean(String.format("modules.%s.enable", moduleName));
     }
-    @SuppressWarnings("unused")
     public Object getModuleValue(String moduleName, String value){
         return this.getConfiguration().get(String.format("modules.%s.%s", moduleName, value));
     }
-
-    public String getEmbedFooter() {
-        return this.getConfiguration().getString("bot.embedFooter");
-    }
-
     public int getExpiryDelay(){
-        return this.getConfiguration().getInt("modules.deadlines.expiryDelay");
+        return (Integer) this.getModuleValue("deadlines", "expiryDelay");
+    }
+    public String getTimetableURL(){
+        return (String) this.getModuleValue("timetable", "url");
     }
 }

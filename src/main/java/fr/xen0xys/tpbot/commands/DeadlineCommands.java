@@ -14,9 +14,13 @@ import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
 
 import java.util.ArrayList;
 
+@SuppressWarnings("ConstantConditions")
 public abstract class DeadlineCommands {
 
-    @SuppressWarnings("ConstantConditions")
+    /**
+     * Command called for creating a new deadline
+     * @param e SlashCommandInteractionEvent given from SlashCommandListener
+     */
     public static void addDeadlineCommand(SlashCommandInteractionEvent e){
         long channelId = e.getOption("channel").getAsLong();
         TextInput name = TextInput.create("name", "Name", TextInputStyle.SHORT)
@@ -40,7 +44,10 @@ public abstract class DeadlineCommands {
         e.replyModal(modal).queue();
     }
 
-    @SuppressWarnings("ConstantConditions")
+    /**
+     * Command called for removing a deadline
+     * @param e SlashCommandInteractionEvent given from SlashCommandListener
+     */
     public static void removeDeadlineCommand(SlashCommandInteractionEvent e){
         String deadlineId = e.getOption("id").getAsString();
         if(!deadlineId.startsWith("#")){
@@ -54,7 +61,10 @@ public abstract class DeadlineCommands {
         }
     }
 
-    @SuppressWarnings("ConstantConditions")
+    /**
+     * Command called for displaying a deadline from id
+     * @param e SlashCommandInteractionEvent given from SlashCommandListener
+     */
     public static void displayDeadlineCommand(SlashCommandInteractionEvent e){
         String deadlineId = e.getOption("id").getAsString();
         if(!deadlineId.startsWith("#")){
@@ -64,10 +74,18 @@ public abstract class DeadlineCommands {
         e.deferReply(true).addEmbeds(new DeadLineDisplayEmbed(deadLine).build()).complete();
     }
 
+    /**
+     * Command called for listing all deadlines
+     * @param e SlashCommandInteractionEvent given from SlashCommandListener
+     */
     public static void listDeadlinesCommand(SlashCommandInteractionEvent e){
         e.deferReply(true).addEmbeds(new DeadLineListEmbed(new ArrayList<>(TPBot.getDeadLines().values())).build()).complete();
     }
 
+    /**
+     * Command called for sending help for deadline commands
+     * @param e SlashCommandInteractionEvent given from SlashCommandListener
+     */
     public static void helpDeadlinesCommand(SlashCommandInteractionEvent e) {
         e.deferReply(true).addEmbeds(new DeadlinesHelpEmbed().build()).queue();
     }

@@ -32,7 +32,7 @@ public class TPBot {
     private static DeadLinesTable deadLinesTable;
 
     public static void main(String[] args){
-        //Init
+        //Logger init
         InputStream stream = TPBot.class.getClassLoader().getResourceAsStream("logging.properties");
         FileHandler logFileHandler;
         try {
@@ -51,10 +51,6 @@ public class TPBot {
             System.exit(1);
         }
         config = new Config(DATAFOLDER, "config.yml");
-
-        // Temp
-        // Utils.updateEdtFile();
-        // logger.info(Long.toString(new EDTParser().parseEdt().get(0).getStartTimestamp()));
 
         // Database init
         Database database;
@@ -89,7 +85,6 @@ public class TPBot {
                 System.exit(3);
             }
             // Slash commands
-            // guild.upsertCommand(new EDTSlashCommand().getCommandData()).queue();
             guild.upsertCommand(new DeadLineSlashCommand().getCommandData()).queue();
 
             // Events
@@ -99,14 +94,14 @@ public class TPBot {
             throw new RuntimeException(e);
         }
 
-        // Module loading
+        // Module loading with ModuleManager
         logger.info("Creating module manager...");
         ModuleManager moduleManager = new ModuleManager(getConfiguration());
         logger.info("Loading modules...");
         moduleManager.loadModules();
         logger.info("Modules started!");
 
-        // Timezone tests
+        // Display current timezone
         logger.info(String.format("Current timezone: %s", Utils.getCurrentTimezone()));
 
         // Program loop

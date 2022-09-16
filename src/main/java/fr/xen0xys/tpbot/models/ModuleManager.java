@@ -11,10 +11,17 @@ public class ModuleManager {
 
     private AsyncDeadlineStatusUpdater asyncDeadlineStatusUpdater;
 
+    /**
+     * Constructor of ModuleManager
+     * @param config Config object, used for module management
+     */
     public ModuleManager(Config config){
         this.config = config;
     }
 
+    /**
+     * Load all bot modules
+     */
     public void loadModules(){
         if(this.config.isModuleEnabled("deadlines")){
             TPBot.getLogger().info("[MODULE MANAGER] Loading deadlines module...");
@@ -23,6 +30,9 @@ public class ModuleManager {
         }
     }
 
+    /**
+     * Unload all bot modules
+     */
     public void unloadModules(){
         if(this.config.isModuleEnabled("deadlines")){
             TPBot.getLogger().info("[MODULE MANAGER] Unloading deadlines module...");
@@ -31,6 +41,9 @@ public class ModuleManager {
         }
     }
 
+    /**
+     * Load all deadlines module
+     */
     private void loadDeadlines(){
         TPBot.getDeadLines().clear();
         for(DeadLine deadLine : TPBot.getDeadLinesTable().getDeadLines()){
@@ -42,6 +55,10 @@ public class ModuleManager {
         this.asyncDeadlineStatusUpdater = new AsyncDeadlineStatusUpdater();
         this.asyncDeadlineStatusUpdater.start();
     }
+
+    /**
+     * Unload deadline module
+     */
     private void unloadDeadlines(){
         TPBot.getDeadLines().clear();
         asyncDeadlineStatusUpdater.shutdown();

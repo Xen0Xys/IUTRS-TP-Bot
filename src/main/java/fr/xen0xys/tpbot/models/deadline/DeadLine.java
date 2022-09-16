@@ -27,10 +27,6 @@ public class DeadLine {
         this.deadlineStatus = oldDeadline.getDeadlineStatus();
     }
 
-    public void setDeadlineStatus(DeadlineStatus deadlineStatus) {
-        this.deadlineStatus = deadlineStatus;
-    }
-
     public String getId() {
         return id;
     }
@@ -48,5 +44,9 @@ public class DeadLine {
     }
     public DeadlineStatus getDeadlineStatus() {
         return deadlineStatus;
+    }
+
+    public void setDeadlineStatus(DeadlineStatus deadlineStatus) {
+        this.deadlineStatus = deadlineStatus;
     }
 }
