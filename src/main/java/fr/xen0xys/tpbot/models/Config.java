@@ -40,10 +40,6 @@ public class Config extends ConfigurationReader {
         return infos;
     }
 
-
-
-
-
     // Modules
     public boolean isModuleEnabled(String moduleName){
         return this.getConfiguration().getBoolean(String.format("modules.%s.enable", moduleName));

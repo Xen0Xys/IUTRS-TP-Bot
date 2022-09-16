@@ -19,7 +19,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Scanner;
 import java.util.logging.*;
 
 public class TPBot {
