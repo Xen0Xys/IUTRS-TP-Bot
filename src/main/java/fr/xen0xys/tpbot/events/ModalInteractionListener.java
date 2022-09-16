@@ -7,7 +7,7 @@ import fr.xen0xys.tpbot.embeds.deadlines.DeadLineDisplayEmbed;
 import fr.xen0xys.tpbot.models.Utils;
 import fr.xen0xys.tpbot.models.deadline.DeadLine;
 import fr.xen0xys.xen0lib.utils.Status;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;

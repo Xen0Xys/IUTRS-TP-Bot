@@ -4,7 +4,7 @@ import fr.xen0xys.tpbot.TPBot;
 import fr.xen0xys.tpbot.models.Utils;
 import fr.xen0xys.tpbot.models.deadline.DeadLine;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 
 import java.awt.*;
 import java.util.List;
