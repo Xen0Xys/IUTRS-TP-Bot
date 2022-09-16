@@ -7,14 +7,16 @@ public class DeadLine {
     private final String content;
     private final long endTimestamp;
     private final long channelId;
+    private final long mentionRoleId;
     private DeadlineStatus deadlineStatus;
 
-    public DeadLine(String id, String name, String content, long endTimestamp, long channelId, DeadlineStatus deadlineStatus) {
+    public DeadLine(String id, String name, String content, long endTimestamp, long channelId, long mentionRoleId, DeadlineStatus deadlineStatus) {
         this.id = id;
         this.name = name;
         this.content = content;
         this.endTimestamp = endTimestamp;
         this.channelId = channelId;
+        this.mentionRoleId = mentionRoleId;
         this.deadlineStatus = deadlineStatus;
     }
 
@@ -24,6 +26,7 @@ public class DeadLine {
         this.content = oldDeadline.getContent();
         this.endTimestamp = oldDeadline.getEndTimestamp();
         this.channelId = oldDeadline.getChannelId();
+        this.mentionRoleId = oldDeadline.getMentionRoleId();
         this.deadlineStatus = oldDeadline.getDeadlineStatus();
     }
 
@@ -41,6 +44,9 @@ public class DeadLine {
     }
     public long getChannelId() {
         return channelId;
+    }
+    public long getMentionRoleId() {
+        return this.mentionRoleId;
     }
     public DeadlineStatus getDeadlineStatus() {
         return deadlineStatus;

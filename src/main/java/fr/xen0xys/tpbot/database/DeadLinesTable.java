@@ -26,7 +26,7 @@ public class DeadLinesTable extends Table {
         injectionProofContent = injectionProofContent.replace("'", "%simple_quote%");
         String injectionProofName = deadLine.getName();
         injectionProofName = injectionProofName.replace("'", "%simple_quote%");
-        String query = String.format("INSERT INTO %s VALUES ('%s', '%s', '%s', %d, %d, '%s')", this.getTableName(), deadLine.getId(), injectionProofName, injectionProofContent, deadLine.getEndTimestamp(), deadLine.getChannelId(), deadLine.getDeadlineStatus());
+        String query = String.format("INSERT INTO %s VALUES ('%s', '%s', '%s', %d, %d, %d, '%s')", this.getTableName(), deadLine.getId(), injectionProofName, injectionProofContent, deadLine.getEndTimestamp(), deadLine.getChannelId(), deadLine.getMentionRoleId(), deadLine.getDeadlineStatus());
         return this.getDatabase().executeUpdateQuery(query);
     }
 
@@ -56,8 +56,9 @@ public class DeadLinesTable extends Table {
                 String injectionProofName = name.replace("%simple_quote%", "'");
                 long endTimestamp = rs.getLong("endTimestamp");
                 long channelId = rs.getLong("channelId");
+                long mentionRoleId = rs.getLong("mentionRoleId");
                 DeadlineStatus deadlineStatus = DeadlineStatus.valueOf(rs.getString("status"));
-                deadLines.add(new DeadLine(id, injectionProofName, injectionProofContent, endTimestamp, channelId, deadlineStatus));
+                deadLines.add(new DeadLine(id, injectionProofName, injectionProofContent, endTimestamp, channelId, mentionRoleId, deadlineStatus));
             }
         } catch (Exception e) {
             e.printStackTrace();

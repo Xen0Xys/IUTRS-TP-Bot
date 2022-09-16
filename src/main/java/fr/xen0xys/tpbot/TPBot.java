@@ -75,6 +75,7 @@ public class TPBot {
                 "content TEXT," +
                 "endTimestamp BIGINT," +
                 "channelId BIGINT," +
+                "mentionRoleId BIGINT," +
                 "status VARCHAR(11)");
 
         // Bot init

@@ -12,6 +12,7 @@ public class DeadLineSlashCommand {
     public DeadLineSlashCommand(){
         SubcommandData addDeadlineCommandData = new SubcommandData("add", "Get EDT for the current day");
         addDeadlineCommandData.addOption(OptionType.CHANNEL, "channel", "Channel for deadline announcement", true);
+        addDeadlineCommandData.addOption(OptionType.ROLE, "role", "Role to mention when deadline reach breakpoint", true);
 
         SubcommandData removeDeadlineCommandData = new SubcommandData("remove", "Get EDT for the next day");
         removeDeadlineCommandData.addOption(OptionType.STRING, "id", "Deadline ID", true);

@@ -4,6 +4,7 @@ import fr.xen0xys.tpbot.TPBot;
 import fr.xen0xys.tpbot.embeds.deadlines.DeadLineDisplayEmbed;
 import fr.xen0xys.tpbot.models.Utils;
 import fr.xen0xys.xen0lib.utils.Status;
+import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 
 import java.util.HashMap;
@@ -38,7 +39,12 @@ public class AsyncDeadlineStatusUpdater extends Thread {
                                 temporaryDeadline.setDeadlineStatus(newDeadlineStatus);
 
                                 if(((System.currentTimeMillis() / 1000) < deadLine.getEndTimestamp() + (TPBot.getConfiguration().getExpiryDelay() * 60L))){
-                                    channel.sendMessageEmbeds(new DeadLineDisplayEmbed(temporaryDeadline).build()).setContent("@everyone").complete();
+                                    Role role = (TPBot.getBot().getRoleById(deadLine.getMentionRoleId()));
+                                    if(role != null){
+                                        channel.sendMessageEmbeds(new DeadLineDisplayEmbed(temporaryDeadline).build()).setContent(role.getAsMention()).complete();
+                                    }else{
+                                        channel.sendMessageEmbeds(new DeadLineDisplayEmbed(temporaryDeadline).build()).setContent("@everyone").complete();
+                                    }
                                 }else{
                                     channel.sendMessageEmbeds(new DeadLineDisplayEmbed(temporaryDeadline).build()).complete();
                                 }

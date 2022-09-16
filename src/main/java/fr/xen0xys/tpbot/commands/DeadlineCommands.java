@@ -23,6 +23,7 @@ public abstract class DeadlineCommands {
      */
     public static void addDeadlineCommand(SlashCommandInteractionEvent e){
         long channelId = e.getOption("channel").getAsLong();
+        long mentionRoleId = e.getOption("role").getAsLong();
         TextInput name = TextInput.create("name", "Name", TextInputStyle.SHORT)
                 .setPlaceholder("Name of the deadline")
                 .setMaxLength(50)
@@ -38,7 +39,7 @@ public abstract class DeadlineCommands {
                 .setMaxLength(10)
                 .setRequired(true)
                 .build();
-        Modal modal = Modal.create(String.format("deadline-%d", channelId), "Deadline Modal")
+        Modal modal = Modal.create(String.format("deadline-%d-%d", channelId, mentionRoleId), "Deadline Modal")
                 .addActionRows(ActionRow.of(name), ActionRow.of(content), ActionRow.of(endTimestamp))
                 .build();
         e.replyModal(modal).queue();
