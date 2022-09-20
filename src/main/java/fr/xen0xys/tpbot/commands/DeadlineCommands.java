@@ -39,7 +39,45 @@ public abstract class DeadlineCommands {
                 .setMaxLength(10)
                 .setRequired(true)
                 .build();
-        Modal modal = Modal.create(String.format("deadline-%d-%d", channelId, mentionRoleId), "Deadline Modal")
+        Modal modal = Modal.create(String.format("deadline_create-%d-%d", channelId, mentionRoleId), "Deadline Modal")
+                .addActionRows(ActionRow.of(name), ActionRow.of(content), ActionRow.of(endTimestamp))
+                .build();
+        e.replyModal(modal).queue();
+    }
+
+    public static void editDeadlinesCommand(SlashCommandInteractionEvent e) {
+        String deadlineId = e.getOption("id").getAsString();
+        long channelId;
+        if(e.getOption("channel") != null){
+            channelId = e.getOption("channel").getAsLong();
+        }else{
+            channelId = TPBot.getDeadLines().get(deadlineId).getChannelId();
+        }
+        long mentionRoleId;
+        if(e.getOption("role") != null){
+            mentionRoleId = e.getOption("role").getAsLong();
+        }else{
+            mentionRoleId = TPBot.getDeadLines().get(deadlineId).getMentionRoleId();
+        }
+        TextInput name = TextInput.create("name", "Name", TextInputStyle.SHORT)
+                .setPlaceholder("Name of the deadline")
+                .setMaxLength(50)
+                .setRequired(true)
+                .setValue(TPBot.getDeadLines().get(deadlineId).getName())
+                .build();
+        TextInput content = TextInput.create("content", "Content", TextInputStyle.PARAGRAPH)
+                .setPlaceholder("Content of the deadline")
+                .setMaxLength(1000)
+                .setRequired(true)
+                .setValue(TPBot.getDeadLines().get(deadlineId).getContent())
+                .build();
+        TextInput endTimestamp = TextInput.create("endtimestamp", "End Timestamp", TextInputStyle.SHORT)
+                .setPlaceholder("Timestamp for the end of the deadline")
+                .setMaxLength(10)
+                .setRequired(true)
+                .setValue(String.valueOf(TPBot.getDeadLines().get(deadlineId).getEndTimestamp()))
+                .build();
+        Modal modal = Modal.create(String.format("deadline_update-%d-%d", channelId, mentionRoleId), "Deadline Modal")
                 .addActionRows(ActionRow.of(name), ActionRow.of(content), ActionRow.of(endTimestamp))
                 .build();
         e.replyModal(modal).queue();

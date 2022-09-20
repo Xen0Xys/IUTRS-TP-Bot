@@ -21,6 +21,7 @@ public class SlashCommandListener extends ListenerAdapter {
                     case "display" -> DeadlineCommands.displayDeadlineCommand(e);
                     case "list" -> DeadlineCommands.listDeadlinesCommand(e);
                     case "help" -> DeadlineCommands.helpDeadlinesCommand(e);
+                    case "edit" -> DeadlineCommands.editDeadlinesCommand(e);
                     default -> this.sendUnknown(e, true);
                 }
                 break;

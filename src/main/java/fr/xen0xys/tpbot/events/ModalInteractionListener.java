@@ -17,7 +17,7 @@ public class ModalInteractionListener extends ListenerAdapter {
     @SuppressWarnings("ConstantConditions")
     @Override
     public void onModalInteraction(@NotNull ModalInteractionEvent e) {
-        if(e.getModalId().startsWith("deadline-")){
+        if(e.getModalId().startsWith("deadline_create-")){
             // Parse deadline data
             long channelId = Long.parseLong(e.getModalId().split("-")[1]);
             long mentionRoleId = Long.parseLong(e.getModalId().split("-")[2]);
