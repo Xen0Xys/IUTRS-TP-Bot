@@ -24,8 +24,13 @@ public class DeadLineSlashCommand {
 
         SubcommandData helpDeadlineCommandData = new SubcommandData("help", "List all created deadlines");
 
-        this.commandData = Commands.slash("deadline", "Get EDT for defined duration").addSubcommands(
-                addDeadlineCommandData, removeDeadlineCommandData, displayDeadlineCommandData, listDeadlineCommandData, helpDeadlineCommandData);
+        SubcommandData editDeadlineCommandData = new SubcommandData("edit", "Edit a deadline");
+        editDeadlineCommandData.addOption(OptionType.STRING, "id", "Deadline ID", true);
+        editDeadlineCommandData.addOption(OptionType.CHANNEL, "channel", "Channel for deadline announcement", false);
+        editDeadlineCommandData.addOption(OptionType.ROLE, "role", "Role to mention when deadline reach breakpoint", false);
+
+        this.commandData = Commands.slash("deadline", "All commands for deadline management").addSubcommands(
+                addDeadlineCommandData, removeDeadlineCommandData, displayDeadlineCommandData, listDeadlineCommandData, helpDeadlineCommandData, editDeadlineCommandData);
     }
 
     public CommandData getCommandData() {
