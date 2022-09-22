@@ -73,14 +73,14 @@ public class ModalInteractionListener extends ListenerAdapter {
                     deadLine.setContent(content);
                     deadLine.setEndTimestamp(endTimestamp);
                     Status status = TPBot.getDeadLinesTable().updateDeadline(deadLine);
-                    if(status != Status.Success){
+                    if(status == Status.Success){
                         return deadLine;
                     }
                 }else{
                     // Create deadline
                     deadLine = new DeadLine(Utils.generateId(), name, content, endTimestamp, channel.getIdLong(), mentionRole.getIdLong(), Utils.getDeadlineStatusFromTimestamp(endTimestamp));
                     Status status = TPBot.getDeadLinesTable().addDeadLine(deadLine); // Add deadline to the DB
-                    if(status != Status.Success){
+                    if(status == Status.Success){
                         TPBot.getDeadLines().put(deadLine.getId(), deadLine); // Add deadline for async status check
                         return deadLine;
                     }
