@@ -17,45 +17,67 @@ public class ModalInteractionListener extends ListenerAdapter {
     @SuppressWarnings("ConstantConditions")
     @Override
     public void onModalInteraction(@NotNull ModalInteractionEvent e) {
-        if(e.getModalId().startsWith("deadline_create-")){
+        if(e.getModalId().startsWith("deadline")){
             // Parse deadline data
             long channelId = Long.parseLong(e.getModalId().split("-")[1]);
             long mentionRoleId = Long.parseLong(e.getModalId().split("-")[2]);
+            String deadlineId = e.getModalId().split("-")[3];
             String name = e.getValue("name").getAsString();
             String content = e.getValue("content").getAsString();
             long endTimestamp = Long.parseLong(e.getValue("endtimestamp").getAsString());
 
-            // Check channel id
+            // Get channel and mentionRole from their ids
             TextChannel channel = TPBot.getBot().getTextChannelById(channelId);
-            Role role = TPBot.getBot().getRoleById(mentionRoleId);
-            if(channel != null){
-                if(role != null){
-                    // Create deadline
-                    String deadlineId = Utils.generateId();
-                    DeadLine deadLine = new DeadLine(deadlineId, name, content, endTimestamp, channelId, mentionRoleId, Utils.getDeadlineStatusFromTimestamp(endTimestamp));
-                    TPBot.getDeadLines().put(deadLine.getId(), deadLine); // Add deadline for async status check
-                    Status status = TPBot.getDeadLinesTable().addDeadLine(deadLine); // Add deadline to the DB
+            Role mentionRole = TPBot.getBot().getRoleById(mentionRoleId);
 
-                    // Check if the deadline has been added to the DB
-                    switch (status) {
-                        case Success -> {
-                            channel.sendMessageEmbeds(new DeadLineDisplayEmbed(deadLine).build()).setContent(role.getAsMention()).queue();
-                            e.deferReply(true).setEmbeds(new CustomMessageEmbed(StatusColor.Ok, String.format("Deadline created with id: %s", deadlineId)).build()).queue();
-                            TPBot.getLogger().info(String.format("Deadline created with id: %s", deadlineId));
-                        }
-                        case SQLError ->{
-                            e.deferReply(true).setEmbeds(new CustomMessageEmbed(StatusColor.Error, "An error occurred while adding the deadline!").build()).queue();
-                            TPBot.getLogger().info("Error with database when creating deadline, aborting!");
-                        }
-                    }
-                }else{
-                    e.deferReply(true).setEmbeds(new CustomMessageEmbed(StatusColor.Error, "Invalid role!").build()).queue();
-                    TPBot.getLogger().warning("Given role not found, aborting deadline creation!");
-                }
+            // Check if the deadline to be created or updated
+            boolean update;
+            update = !deadlineId.equals("0");
+
+            // Create or update deadline
+            DeadLine deadline = this.createOrUpdateDeadline(deadlineId, channel, mentionRole, name, content, endTimestamp, update);
+
+            // Check result and respond to user
+            if(deadline != null){
+                channel.sendMessageEmbeds(new DeadLineDisplayEmbed(deadline).build()).setContent(mentionRole.getAsMention()).queue();
+                e.deferReply(true).setEmbeds(new CustomMessageEmbed(StatusColor.Ok, String.format("Deadline created with id: %s", deadline.getId())).build()).queue();
+                TPBot.getLogger().info(String.format("Deadline created with id: %s", deadline.getId()));
             }else{
-                e.deferReply(true).setEmbeds(new CustomMessageEmbed(StatusColor.Error, "Invalid channel!").build()).queue();
-                TPBot.getLogger().warning("Given channel not found, aborting deadline creation!");
+                e.deferReply(true).setEmbeds(new CustomMessageEmbed(StatusColor.Error, "An error occurred while adding the deadline!").build()).queue();
+                TPBot.getLogger().info("Error with database when creating deadline, aborting!");
             }
         }
+    }
+
+
+    private DeadLine createOrUpdateDeadline(String deadlineId, TextChannel channel, Role mentionRole, String name, String content, long endTimestamp, boolean update){
+        if(channel != null) {
+            if (mentionRole != null) {
+                DeadLine deadLine;
+                if(update){
+                    // Update deadline
+                    deadLine = TPBot.getDeadLines().get(deadlineId);
+                    deadLine.setChannelId(channel.getIdLong());
+                    deadLine.setMentionRoleId(mentionRole.getIdLong());
+                    deadLine.setName(name);
+                    deadLine.setContent(content);
+                    deadLine.setEndTimestamp(endTimestamp);
+                    Status status = TPBot.getDeadLinesTable().updateDeadline(deadLine);
+                    if(status != Status.Success){
+                        return deadLine;
+                    }
+                }else{
+                    // Create deadline
+                    deadLine = new DeadLine(Utils.generateId(), name, content, endTimestamp, channel.getIdLong(), mentionRole.getIdLong(), Utils.getDeadlineStatusFromTimestamp(endTimestamp));
+                    Status status = TPBot.getDeadLinesTable().addDeadLine(deadLine); // Add deadline to the DB
+                    if(status != Status.Success){
+                        TPBot.getDeadLines().put(deadLine.getId(), deadLine); // Add deadline for async status check
+                        return deadLine;
+                    }
+                }
+                return null;
+            }
+        }
+        return null;
     }
 }

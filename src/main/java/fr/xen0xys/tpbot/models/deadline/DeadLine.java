@@ -3,11 +3,11 @@ package fr.xen0xys.tpbot.models.deadline;
 public class DeadLine {
 
     private final String id;
-    private final String name;
-    private final String content;
-    private final long endTimestamp;
-    private final long channelId;
-    private final long mentionRoleId;
+    private String name;
+    private String content;
+    private long endTimestamp;
+    private long channelId;
+    private long mentionRoleId;
     private DeadlineStatus deadlineStatus;
 
     public DeadLine(String id, String name, String content, long endTimestamp, long channelId, long mentionRoleId, DeadlineStatus deadlineStatus) {
@@ -52,6 +52,21 @@ public class DeadLine {
         return deadlineStatus;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+    public void setContent(String content) {
+        this.content = content;
+    }
+    public void setEndTimestamp(long endTimestamp) {
+        this.endTimestamp = endTimestamp;
+    }
+    public void setChannelId(long channelId) {
+        this.channelId = channelId;
+    }
+    public void setMentionRoleId(long mentionRoleId) {
+        this.mentionRoleId = mentionRoleId;
+    }
     public void setDeadlineStatus(DeadlineStatus deadlineStatus) {
         this.deadlineStatus = deadlineStatus;
     }

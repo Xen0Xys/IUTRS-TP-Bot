@@ -77,4 +77,12 @@ public class DeadLinesTable extends Table {
         return this.getDatabase().executeUpdateQuery(query);
     }
 
+    public Status updateDeadline(DeadLine deadLine){
+        String injectionProofContent = deadLine.getContent();
+        injectionProofContent = injectionProofContent.replace("'", "%simple_quote%");
+        String injectionProofName = deadLine.getName();
+        injectionProofName = injectionProofName.replace("'", "%simple_quote%");
+        String query = String.format("UPDATE %s SET name = '%s', content = '%s', endTimestamp = %d, channelId = %d, mentionRoleId = %d, status = '%s' WHERE id = '%s'", this.getTableName(), injectionProofName, injectionProofContent, deadLine.getEndTimestamp(), deadLine.getChannelId(), deadLine.getMentionRoleId(), deadLine.getDeadlineStatus(), deadLine.getId());
+        return this.getDatabase().executeUpdateQuery(query);
+    }
 }

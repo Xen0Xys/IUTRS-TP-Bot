@@ -39,7 +39,7 @@ public abstract class DeadlineCommands {
                 .setMaxLength(10)
                 .setRequired(true)
                 .build();
-        Modal modal = Modal.create(String.format("deadline_create-%d-%d", channelId, mentionRoleId), "Deadline Modal")
+        Modal modal = Modal.create(String.format("deadline-%d-%d-%d", channelId, mentionRoleId, 0), "Deadline Modal")
                 .addActionRows(ActionRow.of(name), ActionRow.of(content), ActionRow.of(endTimestamp))
                 .build();
         e.replyModal(modal).queue();
@@ -47,6 +47,9 @@ public abstract class DeadlineCommands {
 
     public static void editDeadlinesCommand(SlashCommandInteractionEvent e) {
         String deadlineId = e.getOption("id").getAsString();
+        if(!deadlineId.startsWith("#")){
+            deadlineId = "#" + deadlineId;
+        }
         long channelId;
         if(e.getOption("channel") != null){
             channelId = e.getOption("channel").getAsLong();
@@ -77,7 +80,7 @@ public abstract class DeadlineCommands {
                 .setRequired(true)
                 .setValue(String.valueOf(TPBot.getDeadLines().get(deadlineId).getEndTimestamp()))
                 .build();
-        Modal modal = Modal.create(String.format("deadline_update-%d-%d", channelId, mentionRoleId), "Deadline Modal")
+        Modal modal = Modal.create(String.format("deadline-%d-%d-%s", channelId, mentionRoleId, deadlineId), "Deadline Modal")
                 .addActionRows(ActionRow.of(name), ActionRow.of(content), ActionRow.of(endTimestamp))
                 .build();
         e.replyModal(modal).queue();
