@@ -40,8 +40,13 @@ public class ModalInteractionListener extends ListenerAdapter {
             // Check result and respond to user
             if(deadline != null){
                 channel.sendMessageEmbeds(new DeadLineDisplayEmbed(deadline).build()).setContent(mentionRole.getAsMention()).queue();
-                e.deferReply(true).setEmbeds(new CustomMessageEmbed(StatusColor.Ok, String.format("Deadline created with id: %s", deadline.getId())).build()).queue();
-                TPBot.getLogger().info(String.format("Deadline created with id: %s", deadline.getId()));
+                if(update){
+                    e.deferReply(true).setEmbeds(new CustomMessageEmbed(StatusColor.Ok, String.format("Deadline updated with id: %s", deadline.getId())).build()).queue();
+                    TPBot.getLogger().info(String.format("Deadline updated with id: %s", deadline.getId()));
+                }else{
+                    e.deferReply(true).setEmbeds(new CustomMessageEmbed(StatusColor.Ok, String.format("Deadline created with id: %s", deadline.getId())).build()).queue();
+                    TPBot.getLogger().info(String.format("Deadline created with id: %s", deadline.getId()));
+                }
             }else{
                 e.deferReply(true).setEmbeds(new CustomMessageEmbed(StatusColor.Error, "An error occurred while adding the deadline!").build()).queue();
                 TPBot.getLogger().info("Error with database when creating deadline, aborting!");
