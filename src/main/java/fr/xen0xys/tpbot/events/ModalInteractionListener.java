@@ -49,7 +49,17 @@ public class ModalInteractionListener extends ListenerAdapter {
         }
     }
 
-
+    /**
+     * Create or update a deadline
+     * @param deadlineId The deadline id
+     * @param channel The channel where the deadline will be displayed
+     * @param mentionRole The role to mention when the deadline is displayed
+     * @param name The name of the deadline
+     * @param content The content of the deadline
+     * @param endTimestamp The end timestamp of the deadline
+     * @param update If the deadline should be updated or created
+     * @return The deadline created or updated
+     */
     private DeadLine createOrUpdateDeadline(String deadlineId, TextChannel channel, Role mentionRole, String name, String content, long endTimestamp, boolean update){
         if(channel != null) {
             if (mentionRole != null) {

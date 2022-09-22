@@ -45,6 +45,10 @@ public abstract class DeadlineCommands {
         e.replyModal(modal).queue();
     }
 
+    /**
+     * Command called for editing a deadline
+     * @param e SlashCommandInteractionEvent given from SlashCommandListener
+     */
     public static void editDeadlinesCommand(SlashCommandInteractionEvent e) {
         String deadlineId = e.getOption("id").getAsString();
         if(!deadlineId.startsWith("#")){

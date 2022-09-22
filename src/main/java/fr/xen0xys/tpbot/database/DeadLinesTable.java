@@ -77,6 +77,11 @@ public class DeadLinesTable extends Table {
         return this.getDatabase().executeUpdateQuery(query);
     }
 
+    /**
+     * Update deadline on database
+     * @param deadLine Deadline object
+     * @return Custom Status from Xen0Lib: Success, SQLError
+     */
     public Status updateDeadline(DeadLine deadLine){
         String injectionProofContent = deadLine.getContent();
         injectionProofContent = injectionProofContent.replace("'", "%simple_quote%");

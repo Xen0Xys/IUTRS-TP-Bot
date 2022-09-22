@@ -1,15 +1,15 @@
 package fr.xen0xys.tpbot.models;
 
 import fr.xen0xys.tpbot.TPBot;
-import fr.xen0xys.tpbot.models.deadline.AsyncDeadlineStatusUpdater;
 import fr.xen0xys.tpbot.models.deadline.DeadLine;
 import fr.xen0xys.tpbot.models.deadline.DeadlineStatus;
+import fr.xen0xys.tpbot.models.deadline.DeadlineStatusRunnable;
 
 public class ModuleManager {
 
     private final Config config;
 
-    private AsyncDeadlineStatusUpdater asyncDeadlineStatusUpdater;
+    private DeadlineStatusRunnable deadlineStatusRunnable;
 
     /**
      * Constructor of ModuleManager
@@ -52,8 +52,8 @@ public class ModuleManager {
                 TPBot.getLogger().info(String.format("[DEADLINES] Loaded deadline: %s with ID: %s", deadLine.getName(), deadLine.getId()));
             }
         }
-        this.asyncDeadlineStatusUpdater = new AsyncDeadlineStatusUpdater();
-        this.asyncDeadlineStatusUpdater.start();
+        this.deadlineStatusRunnable = new DeadlineStatusRunnable();
+        this.deadlineStatusRunnable.start();
     }
 
     /**
@@ -61,7 +61,7 @@ public class ModuleManager {
      */
     private void unloadDeadlines(){
         TPBot.getDeadLines().clear();
-        asyncDeadlineStatusUpdater.shutdown();
+        deadlineStatusRunnable.shutdown();
     }
 
 }
